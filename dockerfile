@@ -1,8 +1,9 @@
-FROM alpine:3.20.3
+FROM ubuntu:latest AS base
 
-ENV DLLINK=https://terraria.org/api/download/pc-dedicated-server/terraria-server-1449.zip
-ENV DL_FILENAME=terraria-server-1449.zip
+ENV DL_LINK=https://terraria.org/api/download/pc-dedicated-server/terraria-server-1449.zip
+ENV DL_VERSION=1449
+ENV DL_FILE=terraria-server-1449.zip
 
-ADD DLLINK DL_FILENAME
+ADD $DL_LINK /$DL_FILE
 
 
