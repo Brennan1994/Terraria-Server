@@ -1,4 +1,10 @@
-FROM alpine:3.20.3 AS base 
+FROM alpine:3.17.3 AS base
+
+RUN apk add --update-cache \
+    unzip
+
+# add the bootstrap file
+COPY bootstrap.sh /terraria-server/bootstrap.sh
 
 ENV DL_LINK=https://terraria.org/api/download/pc-dedicated-server/terraria-server-1449.zip
 ENV DL_VERSION=1449
@@ -6,24 +12,30 @@ ENV DL_FILE=terraria-server-1449.zip
 
 ADD $DL_LINK /$DL_FILE
 
-RUN unzip $DL_FILE &&\
-    cd $DL_VERSION/Linux &&\
-    chmod a+x TerrariaServer.bin.x86_64 &&\
-    mkdir /terraria-server &&\
-    mv * /terraria-server
+RUN unzip /$DL_FILE -d /terraria && \
+    mv /terraria/$DL_VERSION/Linux/* /terraria-server && \
+    #Linux subfolder does not include any config text file, oddly.
+    mv /terraria/$DL_VERSION/Windows/serverconfig.txt /terraria-server/serverconfig-default.txt && \
+    chmod +x /terraria-server/TerrariaServer && \
+    chmod +x /terraria-server/TerrariaServer.bin.x86_64
 
-# FROM ubuntu:latest AS production
+FROM mono:6.10.0.104-slim
 
-# ENV LOGPATH=/terraria-server/logs
-# ENV WORLDPATH=/root/.local/share/Terraria/Worlds
-# ENV WORLD_FILENAME=""
-# ENV CONFIGPATH=/config
-# ENV CONFIG_FILENAME="serverconfig.txt"
+# documenting ports
+EXPOSE 7777
 
-# EXPOSE 7777
+# env used in the bootstrap
+ENV LOGPATH=/terraria-server/logs
+ENV WORLDPATH=/root/.local/share/Terraria/Worlds
+ENV WORLD_FILENAME=""
+ENV CONFIGPATH=/config
+ENV CONFIG_FILENAME="serverconfig.txt"
 
-# VOLUME [ "${WORLDPATH}", "${CONFIGPATH}", "${LOGPATH}" ]
+VOLUME [ "${WORLDPATH}", "${CONFIGPATH}", "${LOGPATH}" ]
 
-# COPY --from=base /terraria-server/ /terraria-server/
+COPY --from=base /terraria-server/ /terraria-server/
 
+# Set working directory to server
+WORKDIR /terraria-server
 
+ENTRYPOINT [ "/bin/sh", "bootstrap.sh" ]
