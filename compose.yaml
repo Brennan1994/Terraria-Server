@@ -9,8 +9,8 @@ services:
       - "$HOME/terraria/config:/config"
       - "$HOME/terraria/logs:/terraria-server/logs"
     environment:
-      - WORLD_FILENAME="Aurai.wld"
-      - CONFIG_FILENAME="serverconfig.txt"
+      - WORLD_FILENAME=Aurai.wld
+      - CONFIG_FILENAME=serverconfig.txt
     restart: unless-stopped
     stdin_open: true # docker run -i
     tty: true # docker run -t
