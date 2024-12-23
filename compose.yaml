@@ -3,11 +3,11 @@ services:
     container_name: terraria
     image: brennanbeam/terraria-server:latest
     ports:
-      -"7777:7777"
+      - "7777:7777"
     volumes:
-      -"$HOME/terraria/world:/root/.local/share/Terraria/Worlds"
-      -"$HOME/terraria/config:/config"
-      -"$HOME/terraria/logs:/terraria-server/logs"
+      - "$HOME/terraria/world:/root/.local/share/Terraria/Worlds"
+      - "$HOME/terraria/config:/config"
+      - "$HOME/terraria/logs:/terraria-server/logs"
     environment:
       - WORLD_FILENAME="Aurai.wld"
       - CONFIG_FILENAME="serverconfig.txt"
