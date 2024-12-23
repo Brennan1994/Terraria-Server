@@ -1,0 +1,16 @@
+services:
+  terraria-server:
+    container_name: terraria
+    image: brennanbeam/terraria-server:latest
+    ports:
+      -"7777:7777"
+    volumes:
+      -"$HOME/terraria/world:"
+      -"$HOME/terraria/config"
+      -"$HOME/terraria/logs"
+    environment:
+      - WORLD_FILENAME="Aurai.wld"
+      - CONFIG_FILENAME="serverconfig.txt"
+    restart: unless-stopped
+    stdin_open: true # docker run -i
+    tty: true # docker run -t
