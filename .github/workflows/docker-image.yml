@@ -1,0 +1,16 @@
+name: Post Docker Latest
+
+on:
+  push:
+    branches: [ "main" ]
+
+jobs:
+
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v4
+    - name: Build the Docker image
+      run: docker buildx build --push --platform linux/arm64/v8,linux/amd64 --tag brennanbeam/terraria-server:latest .
