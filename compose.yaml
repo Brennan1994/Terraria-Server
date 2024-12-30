@@ -5,9 +5,9 @@ services:
     ports:
       - "7777:7777"
     volumes:
-      - "$HOME/terraria/world:/root/.local/share/Terraria/Worlds"
-      - "$HOME/terraria/config:/config"
-      - "$HOME/terraria/logs:/terraria-server/logs"
+      - "/home/brennan-beam/terraria/world:/root/.local/share/Terraria/Worlds"
+      - "/home/brennan-beam/terraria/config:/config"
+      - "/home/brennan-beam/terraria/logs:/terraria-server/logs"
     environment:
       - WORLD_FILENAME=Aurai.wld
       - CONFIG_FILENAME=serverconfig.txt
